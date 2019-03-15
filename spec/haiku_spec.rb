@@ -13,5 +13,9 @@ RSpec.describe Haiku do
     it 'should return true for a string 5-7-5 in 1 or 2 syllabus words' do
       expect(subject.haiku?("the kata kata,\nthe kata kata kata,\nthe kata kata")).to eq true
     end
+
+    it "should not count the e at the end of a word unless it's one syllables word like 'the' or 'age'" do
+      expect(subject.haiku?("restore the degree,\nalive like the cat eye age,\nblue concrete bride be")).to eq true
+    end
   end
 end

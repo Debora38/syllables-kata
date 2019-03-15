@@ -19,8 +19,22 @@ class Haiku
   def nb_syllables(words)
     line_syllables = 0
     words.each do |word|
-      line_syllables += word.scan(/[aeiou]/).count
+      line_syllables += nb_syllables_word(word)
+      line_syllables -= 1 if final_e(word)
     end
     line_syllables
+  end
+
+  def nb_syllables_word(word)
+    word.scan(/[aeiou]/).count
+  end
+
+  def final_e(word)
+    (last_letter(word) == 'e') && (nb_syllables_word(word) > 1)
+  end
+
+  def last_letter(word)
+    return word.split("")[-2] if word.split("").last == ","
+    return word.split("").last
   end
 end
