@@ -11,9 +11,6 @@ RSpec.describe Haiku do
     end
 
     it 'should return true for a string 5-7-5 in 1 or 2 syllabus words' do
-      p subject.calculation("the kata kata,\nthe kata kata kata,\nthe kata kata")
-      p subject.words("the kata kata,")
-      p subject.nb_syllables(["the", "kata", "kata,"])
       expect(subject.haiku?("the kata kata,\nthe kata kata kata,\nthe kata kata")).to eq true
     end
   end
