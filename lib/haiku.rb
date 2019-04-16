@@ -5,35 +5,35 @@ class Haiku
   end
 
   def analyser(string)
-    result = []
-    string.split("\n").each do |line|
-      result << nb_syllables(words(line))
+    sylables_per_line = []
+    string.downcase.split("\n").each do |line|
+      sylables_per_line << nb_syllables(words(line))
     end
-    result
-  end
-
-  def words(line)
-    line.split.each { |word| word.gsub!(",", "") }
+    sylables_per_line
   end
 
   def nb_syllables(words)
     line_syllables = 0
     words.each do |word|
-      line_syllables += nb_syllables_word(word)
+      line_syllables += vowels_in_word(word)
       line_syllables -= vowel_groups(word)
       line_syllables -= 1 if final_e(word)
     end
     line_syllables
   end
 
-  def nb_syllables_word(word)
+  def vowels_in_word(word)
     word.scan(/[aeiouy]/).count
   end
 
   def final_e(word)
     (letters(word).last == 'e') &&
     !vowel?(letters(word)[-2]) &&
-    (nb_syllables_word(word) > 1)
+    (vowels_in_word(word) > 1)
+  end
+
+  def words(line)
+    line.split.each { |word| word.gsub!(",", "") }
   end
 
   def letters(word)
@@ -41,12 +41,12 @@ class Haiku
   end
 
   def vowel_groups(word)
-    previous_is_vowel = false
+    previous_letter = 'x'
     groups_of_vowels = 0
     letters(word).each do |letter|
-      groups_of_vowels += 1 if vowel?(letter) && previous_is_vowel
-      previous_is_vowel = true if vowel?(letter)
-      previous_is_vowel = false if !vowel?(letter)
+      groups_of_vowels += 1 if vowel?(letter) && vowel?(previous_letter)
+      groups_of_vowels -= 1 if letter == 'o' && previous_letter == 'e'
+      previous_letter = letter
     end
     return groups_of_vowels
   end

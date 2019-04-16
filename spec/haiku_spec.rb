@@ -22,5 +22,10 @@ RSpec.describe Haiku do
       string = "alive blue degree,\nsqueeze that cool sprout like cat eye,\nhonest can restore"
       expect(subject.haiku?(string)).to eq true
     end
+
+    it "should take the pair of vowels e+o as 2 syllables" do
+      string = "alive blue neon,\nsqueeze that leo like cat eye,\ncool geography"
+      expect(subject.haiku?(string)).to eq true
+    end
   end
 end
