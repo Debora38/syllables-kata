@@ -13,7 +13,7 @@ class Haiku
   end
 
   def words(line)
-    line.split
+    line.split.each { |word| word.gsub!(",", "") }
   end
 
   def nb_syllables(words)
@@ -34,7 +34,6 @@ class Haiku
   end
 
   def last_letter(word)
-    return word.split("")[-2] if word.split("").last == ","
-    return word.split("").last
+    word.split("").last
   end
 end
