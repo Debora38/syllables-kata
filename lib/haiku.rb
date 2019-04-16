@@ -16,7 +16,7 @@ class Haiku
     line_syllables = 0
     words.each do |word|
       line_syllables += vowels_in_word(word)
-      line_syllables -= vowel_groups(word)
+      line_syllables -= diphthong(word)
       line_syllables -= 1 if final_e(word)
     end
     line_syllables
@@ -40,18 +40,21 @@ class Haiku
     word.split("")
   end
 
-  def vowel_groups(word)
+  def diphthong(word)
     previous_letter = 'x'
-    groups_of_vowels = 0
+    count = 0
     letters(word).each do |letter|
-      groups_of_vowels += 1 if vowel?(letter) && vowel?(previous_letter)
-      groups_of_vowels -= 1 if letter == 'o' && previous_letter == 'e'
+      count += 1 if previous_letter == 'i' && ["e"].include?(letter)
+      count += 1 if previous_letter == 'a' && ["u", "y", "i", "e"].include?(letter)
+      count += 1 if previous_letter == 'e' && ["a", "e", "y", "i"].include?(letter)
+      count += 1 if previous_letter == 'o' && ["i", "o", "u", "e", "y", "a"].include?(letter)
+      count += 1 if previous_letter == 'u' && ["e", "i", "y"].include?(letter)
       previous_letter = letter
     end
-    return groups_of_vowels
+    return count
   end
 
   def vowel?(letter)
-    ["a", "e", "i", "o", "u", "y"].include?(letter)
+    ["a", "e", "i", "o", "u"].include?(letter)
   end
 end
